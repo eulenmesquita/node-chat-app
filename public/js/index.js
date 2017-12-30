@@ -7,23 +7,29 @@ socket.on('disconnect', function() {
 });
 socket.on('newMessage', function(message) {
     var li = $('<li></li>');
-    li.text(`${message.from}: ${message.text}`);
-
+    li.html(`${message.from}: ${message.text}`);
     $('#messages').append(li);
-    console.log('ok');
 });
 
 $(document).ready(function() {
     $('#message-form').on('submit', function(e) {
         e.preventDefault();
-        var message = $('#message');
+        $('#send-button').prop('disabled', true);
+        var inputMessage = $('#message');
+        var messageBoard = $("#messages");
         socket.emit('createMessage',{
             from: 'User',
-            text: message.val()
+            text: inputMessage.val()
         }, function() {
-
+            inputMessage.val('');
+            inputMessage.focus();
+            
+            var position = $(messageBoard).find(':last-child').position();
+            if (position.top >= messageBoard.height()) {
+                messageBoard.scrollTop(messageBoard.prop('scrollHeight'));
+            }
+            $('#send-button').prop('disabled', false);
         });
-        message.val('');
     })
 });
 
