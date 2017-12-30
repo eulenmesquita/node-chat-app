@@ -16,15 +16,28 @@
         <ol id="messages" class="chat__messages"></ol>
         <div class="chat__footer">
             <form id="message-form">
-                <input type="text" name="message" id="message" placeholder="your message..."/>
+                <input type="text" name="message" id="message"
+                    autofocus autocomplete="off" placeholder="your message..."/>
                 <button id="send-button">Send</button>
             </form>
         </div>
     </div>
-
+    <script id="message-template" type="text/template">
+        <li class="message">
+            <div class="message__title">
+                <h4>{{from}}</h4>
+                <span>{{time}}</span>
+            </div>
+            <div class="message__text">
+                {{text}}
+            </div>
+        </li>
+    </script>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/libs/jquery-3.2.1.min.js"></script>
+    <script src="/js/libs/mustache.min.js"></script>
+    <script src="/js/libs/moment.min.js"></script>
     <script src="/js/index.js"></script>
 </body>
 </html>
