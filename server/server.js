@@ -20,7 +20,12 @@ io.on('connection', (socket) => {
     console.log('New user connected');
     
     socket.on('createMessage', (message, callback) => {
-        io.emit('newMessage', generateMessage(message.from, message.text));
+        var user = users.getUser(socket.id);
+
+        if (user && isRealString(message.text)) {
+            io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+        }
+
         callback();
     });
     
@@ -31,7 +36,7 @@ io.on('connection', (socket) => {
         
         socket.join(params.room);
         users.removeUser(socket.id);
-        var u = users.addUser(socket.id, params.nickname, params.room);
+        users.addUser(socket.id, params.nickname, params.room);
         
         io.to(params.room).emit('updateUserList', users.getUserList(params.room));
         socket.emit('newMessage', generateMessage('Admin','Welcome to the NodeChatApp'));

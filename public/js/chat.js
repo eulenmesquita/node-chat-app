@@ -58,8 +58,7 @@ $(document).ready(function() {
         e.preventDefault();
         var inputMessage = $('#message');
         var messageBoard = $("#messages");
-        socket.emit('createMessage',{
-            from: 'User',
+        socket.emit('createMessage', {
             text: inputMessage.val()
         }, function() {
             inputMessage.val('').focus();
